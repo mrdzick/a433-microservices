@@ -1,0 +1,60 @@
+# Set docker compose version to be 3.8
+version: '3.8'
+
+# Define services
+services:
+
+  # Define service named item-app
+  item-app:
+
+    # Set service from image ghcr.io/mrdzick/item-app:v1
+    image: ghcr.io/mrdzick/item-app:v1
+
+    # Map port 8080 on container to port 80 on local machine 
+    ports:
+      - 80:8080
+
+    # Set environment variables for DB_HOST pointing to item-db container
+    environment:
+      - DB_HOST=item-db
+      
+    # Set this service to started only after item-db started
+    depends_on:
+      - item-db
+    # Set restart policy if container was crashed
+    restart: always
+
+    # Attach to network named item-app-net
+    networks:
+      - item-app-net
+  
+  # Define service named item-db 
+  item-db:
+
+    # Set service from docker image mongo:3.0
+    image: mongo:3
+
+    # Attach volume named app-db pointing to /data/db directory
+    volumes:
+      - app-db:/data/db
+
+    # Set restart policy if container was crashed
+    restart: always
+
+    # Set database mongodb via environment variables
+    environment:
+      MONGO_INITDB_DATABASE: accumulator
+
+    # Attach to network named item-app-net
+    networks:
+      - item-app-net
+
+# Create volume named app-db
+volumes:
+  app-db:
+
+# Create network named item-app-net that has bridge type
+networks:
+  item-app-net:
+    name: item-app-net
+    driver: bridge
