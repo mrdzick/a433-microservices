@@ -13,10 +13,6 @@ services:
     # Map port 8080 on container to port 80 on local machine 
     ports:
       - 80:8080
-
-    # Set environment variables for DB_HOST pointing to item-db container
-    environment:
-      - DB_HOST=item-db
       
     # Set this service to started only after item-db started
     depends_on:
