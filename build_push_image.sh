@@ -10,7 +10,7 @@ docker images ls;
 docker tag item-app:v1 ghcr.io/mrdzick/item-app:v1;
 
 # Set personal access token of github
-export CR_PAT=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;
+export CR_PAT=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;
 
 # Login to container registry
 echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin;
